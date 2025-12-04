@@ -52,4 +52,5 @@ Route::middleware(['auth'])->group(function () {
 
     // RESERVAS
     Route::get('/reservas', Reservas::class)->name('reservas.index');
+    
 });

@@ -1,0 +1,62 @@
+/* ===============================
+   Custom Dashboard Styles (paste at the end of resources/css/app.css)
+   =============================== */
+@layer components {
+  /* Resumen superior */
+  .summary-card { @apply bg-gray-50 dark:bg-neutral-800 rounded-lg p-6 shadow-sm border border-transparent; }
+  .summary-card .label { @apply text-sm text-gray-500; }
+  .summary-card .value { @apply mt-3 text-2xl font-bold; }
+
+  /* Card de evento en listado */
+  .event-card { @apply bg-white dark:bg-neutral-900 rounded-lg border border-neutral-100 dark:border-neutral-700 p-4 shadow-sm; }
+  .event-card .event-title { @apply font-semibold text-lg; }
+  .event-card .event-desc  { @apply text-sm text-gray-500 mt-2; }
+  .event-card .meta       { @apply mt-3 text-xs text-gray-400 flex items-center gap-3; }
+  .event-card .actions    { @apply flex gap-2 items-center; }
+  .event-card .btn-edit   { @apply px-3 py-1 border rounded text-sm; }
+  .event-card .btn-delete { @apply px-3 py-1 border rounded text-sm; }
+
+  .event-card--highlight { @apply border-pink-200 ring-1 ring-pink-50; }
+
+  /* Form lateral */
+  .side-form { @apply bg-white dark:bg-neutral-900 rounded-lg border p-6 shadow-sm; }
+  .side-form label { @apply text-sm text-gray-600; }
+  .side-form .input { @apply w-full rounded-md border px-3 py-2 mt-1 bg-white dark:bg-neutral-800; }
+  .side-form .btn-primary { @apply bg-pink-500 hover:bg-pink-600 text-white px-4 py-2 rounded; }
+
+  /* Tabla de eventos */
+  .events-table thead th { @apply text-left text-xs text-gray-500; }
+  .events-table tbody td { @apply py-4 text-sm text-gray-700; }
+  .events-table .btn-view { @apply inline-block px-3 py-1 rounded bg-gray-100 text-sm; }
+
+  /* Tareas */
+  .tasks-card { @apply bg-white dark:bg-neutral-900 rounded-lg border p-6 shadow-sm; }
+  .tasks-card ul { @apply space-y-3; }
+  .tasks-card li { @apply flex items-start gap-3; }
+  .tasks-card .task-done { @apply line-through text-gray-400; }
+
+  /* Perfil cliente */
+  .client-profile { @apply bg-white dark:bg-neutral-900 rounded-lg border p-6 shadow-sm; }
+  .client-profile .heading { @apply text-2xl font-semibold; }
+  .client-profile .meta { @apply text-sm text-gray-500; }
+  .client-profile .events-past thead th { @apply text-xs text-gray-500; }
+  .client-profile .notes { @apply mt-4 text-sm text-gray-700; }
+
+  /* Botones rosados */
+  .btn-pink { @apply inline-flex items-center justify-center px-3 py-1 rounded-md bg-pink-500 hover:bg-pink-600 text-white text-sm; }
+
+  /* Layout 2-col */
+  .two-col-layout { @apply grid grid-cols-1 lg:grid-cols-3 gap-6; }
+  .two-col-layout .main { @apply lg:col-span-2; }
+  .two-col-layout .aside { @apply lg:col-span-1; }
+
+  .search-input { @apply w-full rounded-md border px-3 py-2 bg-gray-50 placeholder-gray-400; }
+
+  .md-custom :where(.event-card, .side-form, .tasks-card, .client-profile) { isolation: isolate; }
+}
+
+.event-card:hover {
+  box-shadow: 0 6px 18px rgba(219, 39, 119, 0.06);
+  transform: translateY(-2px);
+  transition: all .18s ease;
+}
