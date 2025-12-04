@@ -6,17 +6,25 @@ use App\Livewire\Settings\Profile;
 use App\Livewire\Settings\TwoFactor;
 use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Features;
+
+// Tus componentes Livewire actuales
 use App\Livewire\Clientes;
 use App\Livewire\Servicios;
 use App\Livewire\Eventos;
 use App\Livewire\Reservas;
 
+// NUEVO: Dashboard Livewire
+use App\Http\Livewire\Dashboard;
 
 Route::get('/', function () {
     return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
+/*
+ * DASHBOARD (Livewire)
+ * Reemplaza Route::view('dashboard','dashboard') por el componente Livewire Dashboard
+ */
+Route::get('dashboard', Dashboard::class)
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
 
@@ -52,5 +60,5 @@ Route::middleware(['auth'])->group(function () {
 
     // RESERVAS
     Route::get('/reservas', Reservas::class)->name('reservas.index');
-    
+
 });
