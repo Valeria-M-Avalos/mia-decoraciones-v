@@ -8,7 +8,6 @@
     "require": {
         "php": "^8.2",
         "filament/filament": "*",
-        "flowframe/laravel-trend": "*",
         "laravel/fortify": "^1.30",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",

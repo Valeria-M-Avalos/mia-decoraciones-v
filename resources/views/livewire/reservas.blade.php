@@ -139,7 +139,7 @@
                             <option value="">-- Seleccione --</option>
                             @foreach($clientes as $cli)
                                 <option value="{{ $cli->id }}">{{ $cli->nombre }}</option>
-                            @endforeach
+                            @endforeachad
                         </select>
                     </div>
 

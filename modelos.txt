@@ -1,0 +1,190 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Cliente extends Model
+{
+    protected $fillable = [
+        'nombre',
+        'email',
+        'telefono'
+    ];
+
+    // Capitaliza el nombre automáticamente al mostrarlo
+    public function getNombreAttribute($value)
+    {
+        return ucwords($value);
+    }
+}
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Evento extends Model
+{
+    protected $fillable = [
+        'cliente_id',
+        'titulo',
+        'descripcion',
+        'fecha',
+        'hora',
+        'lugar',
+        'tipo_evento',
+        'invitados',
+        'costo',
+        'estado',
+    ];
+
+    /** RELACIÓN: Un evento pertenece a un cliente */
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class);
+    }
+
+    /** CAPITALIZACIÓN AUTOMÁTICA */
+    public function getTituloAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    public function getLugarAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    public function getTipoEventoAttribute($value)
+    {
+        return ucwords($value);
+    }
+}
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Reserva extends Model
+{
+    protected $fillable = [
+        'fecha_reserva',
+        'cliente_id',
+        'evento_id',
+        'senia',
+        'total',
+        'estado',
+        'metodo_pago',
+        'observaciones',
+    ];
+
+    // RELACIÓN con Cliente
+    public function cliente()
+    {
+        return $this->belongsTo(Cliente::class);
+    }
+
+    // RELACIÓN con Evento
+    public function evento()
+    {
+        return $this->belongsTo(Evento::class);
+    }
+
+    // FORMATO AUTOMÁTICO
+    public function getMetodoPagoAttribute($value)
+    {
+        return $value ? ucwords($value) : null;
+    }
+
+    public function getEstadoAttribute($value)
+    {
+        return ucfirst($value);
+    }
+}
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Servicio extends Model
+{
+    protected $fillable = [
+        'nombre',
+        'descripcion',
+        'precio'
+    ];
+
+    // Capitalizar automáticamente
+    public function getNombreAttribute($value)
+    {
+        return ucwords($value);
+    }
+}
+
+<?php
+
+namespace App\Models;
+
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
+use Laravel\Fortify\TwoFactorAuthenticatable;
+
+class User extends Authenticatable
+{
+    /** @use HasFactory<\Database\Factories\UserFactory> */
+    use HasFactory, Notifiable, TwoFactorAuthenticatable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'two_factor_secret',
+        'two_factor_recovery_codes',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'email_verified_at' => 'datetime',
+            'password' => 'hashed',
+        ];
+    }
+
+    /**
+     * Get the user's initials
+     */
+    public function initials(): string
+    {
+        return Str::of($this->name)
+            ->explode(' ')
+            ->take(2)
+            ->map(fn ($word) => Str::substr($word, 0, 1))
+            ->implode('');
+    }
+}
