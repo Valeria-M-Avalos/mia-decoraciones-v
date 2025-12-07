@@ -153,6 +153,42 @@
     background-color: #ffffff !important;
 }
 
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * CÓDIGO AÑADIDO: VISIBILIDAD DE LOGO Y TEXTO JUNTOS *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* 1. Asegura que el contenedor principal muestre tanto el logo como el texto */
+/* .fi-topbar-brand es el contenedor en la barra superior */
+.fi-topbar-brand {
+    /* Usar flexbox para alinear elementos horizontalmente */
+    display: flex !important;
+    align-items: center; 
+}
+
+/* 2. Asegura que el contenedor del nombre (texto) no esté oculto */
+/* .fi-brand-name contiene el texto "Mia Decoraciones" */
+.fi-brand-name {
+    display: inline-block !important;
+    /* Ajusta el margen si el logo y el texto están muy pegados */
+    margin-left: 0.5rem !important; 
+    /* Asegura que el texto use el color de la barra (no blanco si el fondo es blanco) */
+    color: #404040 !important; 
+    font-size: 1.5rem !important; /* Puedes ajustar el tamaño del texto aquí */
+    font-weight: bold !important;
+}
+
+/* 3. Ajuste para el Sidebar (si tienes el sidebar abierto) */
+.fi-sidebar .fi-sidebar-brand {
+    display: flex !important;
+    align-items: center;
+    /* Asegura que el texto del nombre no esté oculto en el sidebar */
+    .fi-brand-name {
+        display: inline-block !important;
+        margin-left: 0.5rem !important;
+        color: inherit !important;
+    }
+}
+
 /* 2. Directivas de Tailwind (deben ir al final) */
 @source '../../../../app/Filament/Admin/**/*';
 @source '../../../../resources/views/filament/admin/**/*';
