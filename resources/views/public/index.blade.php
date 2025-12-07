@@ -25,10 +25,10 @@
         </p>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="{{ route('servicios') }}" class="bg-gradient-to-r from-pink-500 to-pink-600 text-white px-8 py-4 rounded-full text-lg font-semibold hover:from-pink-600 hover:to-pink-700 transition shadow-xl transform hover:scale-105">
+            <a href="{{ route('servicios.publicos') }}" class="bg-white text-pink-700 border-2 border-pink-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-pink-50 transition shadow-lg transform hover:scale-105">
                 Ver Servicios
             </a>
-            <a href="{{ route('contacto') }}" class="bg-white text-pink-600 border-2 border-pink-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-pink-50 transition shadow-lg transform hover:scale-105">
+            <a href="{{ route('contacto') }}" class="bg-white text-pink-700 border-2 border-pink-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-pink-50 transition shadow-lg transform hover:scale-105">
                 Contactar Ahora
             </a>
         </div>
@@ -120,7 +120,7 @@
 </section>
 
 <!-- CTA Final -->
-<section class="py-20 bg-gradient-to-r from-pink-500 to-pink-600 text-white">
+<section class="py-20 bg-gradient-to-r from-pink-500 to-pink-600 text-pink-100">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Listo para tu Evento Soñado?</h2>
         <p class="text-xl mb-8">Contáctanos y comencemos a planificar juntos</p>

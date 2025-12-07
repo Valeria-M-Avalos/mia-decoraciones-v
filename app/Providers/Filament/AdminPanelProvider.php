@@ -32,23 +32,27 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login()
             ->brandName('Mía Decoraciones')
-            ->favicon(asset('images/favicon.png'))
+            ->brandLogo(asset('images/logo.png'))
+            ->darkModeBrandLogo(asset('images/logo.png'))
+            ->favicon(asset('images/favicon.svg'))
+            ->darkMode(false) 
+            ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => [
-                    50 => '#fef2f2',
-                    100 => '#fee2e2',
-                    200 => '#fecaca',
-                    300 => '#fca5a5',
-                    400 => '#f87171',
-                    500 => '#ec407a', // Rosa principal del logo
-                    600 => '#dc2f6a',
-                    700 => '#be185d',
-                    800 => '#9f1239',
-                    900 => '#881337',
-                    950 => '#4c0519',
+                    50 => '#fef2f4',
+                    100 => '#fde6e9',
+                    200 => '#fbd0d9',
+                    300 => '#f8aabb',
+                    400 => '#f47694',
+                    500 => '#FF5A79', // Rosa principal del logo
+                    600 => '#e63559',
+                    700 => '#c2274a',
+                    800 => '#a22344',
+                    900 => '#8a2140',
+                    950 => '#4d0d20',
                 ],
-                'warning' => Color::Amber, // Para el amarillo de la estrella
             ])
+            ->font('Inter') // Misma fuente que tu sistema
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([

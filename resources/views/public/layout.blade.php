@@ -31,7 +31,7 @@
             <div class="flex justify-between items-center h-20">
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center">
-                    <img src="{{ asset('images/logo-mia.png') }}" alt="Mía Decoraciones" class="h-16">
+                    <img src="{{ asset('images/logo.png') }}" alt="Mía Decoraciones" class="h-14">
                 </a>
                 
                 <!-- Menu Desktop -->
@@ -72,12 +72,12 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gradient-to-r from-pink-600 to-pink-500 text-white mt-20">
+    <footer class="bg-gradient-to-r from-pink-600 to-pink-500 text-gray-800 mt-20">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 <!-- Logo y descripción -->
                 <div>
-                    <img src="{{ asset('images/logo-mia.png') }}" alt="Mía Decoraciones" class="h-16 mb-4 brightness-0 invert">
+                    <img src="{{ asset('images/logo.png') }}" alt="Mía Decoraciones" class="h-16 mb-4 brightness-0">
                     <p class="text-pink-100">Creamos momentos mágicos e inolvidables para tus eventos especiales.</p>
                 </div>
                 
@@ -85,16 +85,16 @@
                 <div>
                     <h3 class="font-semibold text-lg mb-4">Enlaces Rápidos</h3>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('home') }}" class="text-pink-100 hover:text-white transition">Inicio</a></li>
-                        <li><a href="{{ route('servicios.publicos') }}" class="text-pink-100 hover:text-white transition">Servicios</a></li>
-                        <li><a href="{{ route('contacto') }}" class="text-pink-100 hover:text-white transition">Contacto</a></li>
+                        <li><a href="{{ route('home') }}" class="text-pink-100 hover:text-gray-800 transition">Inicio</a></li>
+                        <li><a href="{{ route('servicios.publicos') }}" class="text-pink-100 hover:text-gray-800 transition">Servicios</a></li>
+                        <li><a href="{{ route('contacto') }}" class="text-pink-100 hover:text-gray-800 transition">Contacto</a></li>
                     </ul>
                 </div>
                 
                 <!-- Contacto -->
                 <div>
                     <h3 class="font-semibold text-lg mb-4">Contacto</h3>
-                    <ul class="space-y-2 text-pink-100">
+                    <ul class="space-y-2 text-pink-700">
                         <li>📧 info@miadecoracione.com</li>
                         <li>📱 WhatsApp: +54 9 11 XXXX-XXXX</li>
                         <li>📍 Formosa, Argentina</li>
@@ -102,7 +102,7 @@
                 </div>
             </div>
             
-            <div class="border-t border-pink-400 mt-8 pt-8 text-center text-pink-100">
+            <div class="border-t border-pink-400 mt-8 pt-8 text-center text-pink-700">
                 <p>&copy; {{ date('Y') }} Mía Decoraciones. Todos los derechos reservados.</p>
             </div>
         </div>

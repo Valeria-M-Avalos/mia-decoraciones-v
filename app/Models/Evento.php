@@ -8,12 +8,13 @@ class Evento extends Model
 {
     protected $fillable = [
         'cliente_id',
+        'servicio_id', // NUEVO: Relación con servicios (tipo de evento)
         'titulo',
         'descripcion',
         'fecha',
         'hora',
         'lugar',
-        'tipo_evento',
+        'tipo_evento', // Mantener por compatibilidad
         'invitados',
         'costo',
         'estado',
@@ -23,6 +24,12 @@ class Evento extends Model
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
+    }
+
+    /** NUEVA RELACIÓN: Un evento tiene un servicio/tipo */
+    public function servicio()
+    {
+        return $this->belongsTo(Servicio::class);
     }
 
     /** CAPITALIZACIÓN AUTOMÁTICA */
@@ -38,6 +45,10 @@ class Evento extends Model
 
     public function getTipoEventoAttribute($value)
     {
+        // Si tiene servicio asociado, usar el nombre del servicio
+        if ($this->servicio) {
+            return $this->servicio->nombre;
+        }
         return ucwords($value);
     }
 }
