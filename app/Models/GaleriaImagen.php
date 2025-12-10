@@ -12,6 +12,7 @@ class GaleriaImagen extends Model
         'titulo',
         'descripcion',
         'tipo_evento',
+        'categoria', // NUEVO
         'imagen',
         'destacada',
         'orden',
@@ -35,6 +36,14 @@ class GaleriaImagen extends Model
     public function scopePorTipo($query, $tipo)
     {
         return $query->where('tipo_evento', $tipo)->orderBy('orden');
+    }
+
+    /**
+     * Scope por categoría
+     */
+    public function scopePorCategoria($query, $categoria)
+    {
+        return $query->where('categoria', $categoria)->orderBy('orden');
     }
 
     /**

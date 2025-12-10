@@ -33,7 +33,7 @@
                         @if($tipo['nombre'] == 'Cumpleaños') 🎂
                         @elseif($tipo['nombre'] == 'Bodas') 💍
                         @elseif($tipo['nombre'] == 'XV Años') ✨
-                        @elseif($tipo['nombre'] == 'Bautizos') 🎁
+                        @elseif($tipo['nombre'] == 'Otros Eventos') 🎁
                         @endif
                     </span>
                 </div>
@@ -90,7 +90,7 @@
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-r from-pink-500 to-pink-600 rounded-3xl p-12 text-white text-center">
             <div class="text-6xl mb-6">👥</div>
-            <h2 class="text-4xl font-bold mb-4">Eventos para Hasta 200 Personas</h2>
+            <h2 class="text-4xl font-bold mb-4">Eventos para Hasta 60 Personas</h2>
             <p class="text-xl text-pink-100 mb-8">
                 Nos especializamos en eventos íntimos y personalizados donde cada detalle cuenta
             </p>

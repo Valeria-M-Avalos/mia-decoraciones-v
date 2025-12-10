@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\GaleriaImagen;
 use App\Models\Servicio;
+use App\Models\Solicitud;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -14,7 +16,8 @@ class PublicController extends Controller
     public function index()
     {
         $servicios = Servicio::take(6)->get();
-        return view('public.index', compact('servicios'));
+        $imagenesDestacadas = GaleriaImagen::destacadas()->take(6)->get();
+        return view('public.index', compact('servicios', 'imagenesDestacadas'));
     }
 
     /**
@@ -23,36 +26,42 @@ class PublicController extends Controller
     public function servicios()
     {
         $servicios = Servicio::all();
+        $imagenesPorTipo = [];
         
         // Tipos de eventos que ofreces
         $tiposEventos = [
             [
                 'nombre' => 'Cumpleaños',
+                'slug' => 'cumpleaños',
                 'descripcion' => 'Celebraciones únicas para todas las edades. Convertimos tus sueños en realidad.',
                 'icono' => 'heroicon-o-cake',
-                'imagen' => 'cumpleanos.jpg'
             ],
             [
                 'nombre' => 'Bodas',
+                'slug' => 'boda',
                 'descripcion' => 'El día más especial de tu vida merece una decoración inolvidable.',
                 'icono' => 'heroicon-o-heart',
-                'imagen' => 'bodas.jpg'
             ],
             [
                 'nombre' => 'XV Años',
+                'slug' => 'xv_años',
                 'descripcion' => 'Quinceañeras de ensueño con decoraciones que reflejan tu personalidad.',
                 'icono' => 'heroicon-o-sparkles',
-                'imagen' => 'xv-anos.jpg'
             ],
             [
                 'nombre' => 'Bautizos',
+                'slug' => 'bautizo',
                 'descripcion' => 'Momentos tiernos decorados con delicadeza y amor.',
                 'icono' => 'heroicon-o-gift',
-                'imagen' => 'bautizos.jpg'
             ],
         ];
         
-        return view('public.servicios', compact('servicios', 'tiposEventos'));
+        // Obtener imágenes por tipo
+        foreach ($tiposEventos as $tipo) {
+            $imagenesPorTipo[$tipo['slug']] = GaleriaImagen::porTipo($tipo['slug'])->take(1)->first();
+        }
+        
+        return view('public.servicios', compact('servicios', 'tiposEventos', 'imagenesPorTipo'));
     }
 
     /**
@@ -77,9 +86,17 @@ class PublicController extends Controller
             'mensaje' => 'required|string',
         ]);
 
-        // Aquí puedes agregar la lógica para enviar email o guardar en BD
-        // Por ahora solo redirigimos con mensaje de éxito
-        
+        // Guardar en la tabla solicitudes
+        Solicitud::create([
+            'nombre' => $validated['nombre'],
+            'email' => $validated['email'],
+            'telefono' => $validated['telefono'],
+            'tipo_evento' => $validated['tipo_evento'],
+            'fecha_evento' => $validated['fecha_evento'] ?? null,
+            'mensaje' => $validated['mensaje'],
+            'estado' => 'pendiente',
+        ]);
+
         return redirect()->route('contacto')->with('success', '¡Gracias por contactarnos! Nos pondremos en contacto contigo pronto.');
     }
 }

@@ -83,8 +83,8 @@
                 <div class="w-20 h-20 mx-auto bg-white rounded-full flex items-center justify-center mb-4 group-hover:scale-110 transition">
                     <span class="text-4xl">🎁</span>
                 </div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-3">Bautizos</h3>
-                <p class="text-gray-600">Momentos tiernos y especiales</p>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Otros Envento</h3>
+                <p class="text-gray-600">Eventos a medida creados por vos</p>
             </div>
         </div>
     </div>
@@ -112,7 +112,7 @@
             
             <div class="bg-white rounded-2xl p-8 shadow-lg">
                 <div class="text-5xl mb-4">👥</div>
-                <h3 class="text-2xl font-bold text-gray-800 mb-3">Hasta 200 Personas</h3>
+                <h3 class="text-2xl font-bold text-gray-800 mb-3">Hasta 60 Personas</h3>
                 <p class="text-gray-600">Eventos íntimos y acogedores</p>
             </div>
         </div>
