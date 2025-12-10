@@ -10,6 +10,8 @@ return new class extends Migration
     {
         Schema::create('eventos', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('servicio_id')->nullable()
+                  ->constrained('servicios')->nullOnDelete();
 
             $table->string('titulo');
             $table->text('descripcion')->nullable();
