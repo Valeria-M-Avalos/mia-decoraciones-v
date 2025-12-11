@@ -12,10 +12,12 @@ class GaleriaImagen extends Model
         'titulo',
         'descripcion',
         'tipo_evento',
-        'categoria', // NUEVO
+        'categoria', 
         'imagen',
         'destacada',
         'orden',
+        'embed_code_instagram',
+        'archivo_video',
     ];
 
     protected $casts = [
