@@ -4,7 +4,6 @@
 
 @section('content')
 
-<!-- Hero Servicios -->
 <section class="py-20 bg-gradient-to-br from-pink-100 via-pink-50 to-yellow-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h1 class="text-5xl md:text-6xl font-bold text-gray-800 mb-6">
@@ -16,7 +15,6 @@
     </div>
 </section>
 
-<!-- Tipos de Eventos -->
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
@@ -26,16 +24,25 @@
         
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             @foreach($tiposEventos as $tipo)
-            <div class="group relative bg-gradient-to-br from-pink-50 to-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
-                <!-- Placeholder para imagen -->
-                <div class="h-64 bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center">
-                    <span class="text-8xl">
-                        @if($tipo['nombre'] == 'Cumpleaños') 🎂
-                        @elseif($tipo['nombre'] == 'Bodas') 💍
-                        @elseif($tipo['nombre'] == 'XV Años') ✨
-                        @elseif($tipo['nombre'] == 'Otros Eventos') 🎁
-                        @endif
-                    </span>
+            
+            {{-- INICIO CORRECCIÓN: El <a> ahora envuelve toda la tarjeta --}}
+            <a href="{{ route('eventos.detalle', ['tipo' => $tipo['slug']]) }}" 
+               class="group relative bg-gradient-to-br from-pink-50 to-white rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 block">
+                
+                <div class="h-64 bg-gradient-to-br from-pink-200 to-pink-300 flex items-center justify-center overflow-hidden">
+                    @if(isset($imagenesPorTipo[$tipo['slug']]) && $imagenesPorTipo[$tipo['slug']])
+                        <img src="{{ $imagenesPorTipo[$tipo['slug']]->imagen_url }}" 
+                             alt="{{ $tipo['nombre'] }}" 
+                             class="w-full h-full object-cover">
+                    @else
+                        <span class="text-8xl">
+                            @if($tipo['nombre'] == 'Cumpleaños') 🎂
+                            @elseif($tipo['nombre'] == 'Bodas') 💍
+                            @elseif($tipo['nombre'] == 'XV Años') ✨
+                            @elseif($tipo['nombre'] == 'Otros Eventos') 🎁
+                            @endif
+                        </span>
+                    @endif
                 </div>
                 
                 <div class="p-8">
@@ -49,13 +56,14 @@
                         </svg>
                     </div>
                 </div>
-            </div>
+            </a>
+            {{-- FIN CORRECCIÓN --}}
+            
             @endforeach
         </div>
     </div>
 </section>
 
-<!-- Servicios Incluidos -->
 <section class="py-20 bg-gradient-to-br from-pink-50 to-yellow-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
@@ -85,7 +93,6 @@
     </div>
 </section>
 
-<!-- Capacidad -->
 <section class="py-20 bg-white">
     <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-gradient-to-r from-pink-500 to-pink-600 rounded-3xl p-12 text-white text-center">
@@ -101,7 +108,6 @@
     </div>
 </section>
 
-<!-- Proceso -->
 <section class="py-20 bg-gradient-to-br from-pink-50 to-yellow-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
@@ -136,7 +142,6 @@
     </div>
 </section>
 
-<!-- CTA -->
 <section class="py-20 bg-gradient-to-r from-pink-500 to-pink-600 text-white">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 class="text-4xl md:text-5xl font-bold mb-6">¿Comenzamos a Planificar?</h2>

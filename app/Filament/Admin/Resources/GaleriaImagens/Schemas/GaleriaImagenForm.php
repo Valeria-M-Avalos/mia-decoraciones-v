@@ -26,13 +26,19 @@ class GaleriaImagenForm
                     ->rows(3)
                     ->columnSpanFull(),
                 
+                Textarea::make('embed_code_instagram')
+                    ->label('Código de Incrustación de Instagram/Video (Opcional)')
+                    ->helperText('Pega aquí el código HTML completo que te da Instagram para incrustar el video.')
+                    ->rows(5)
+                    ->columnSpanFull(),
+
                 Select::make('tipo_evento')
                     ->label('Tipo de Evento')
                     ->options([
-                        'cumpleaños' => '🎂 Cumpleaños',
-                        'boda' => '💍 Boda',
-                        'xv_años' => '✨ XV Años',
-                        'bautizo' => '🎁 Bautizo',
+                        'cumpleanos' => '🎂 Cumpleaños',
+                        'casamiento' => '💍 Casamientos', 
+                        'xv_anos' => '✨ XV Años',
+                        'otros_eventos' => '🎁 Otros Eventos', 
                     ])
                     ->required(),
                 
@@ -40,14 +46,12 @@ class GaleriaImagenForm
                     ->label('Carpeta / Categoría')
                     ->options([
                         'cumpleanos' => '📁 Cumpleaños',
-                        'bodas' => '📁 Bodas',
+                        'casamiento' => '📁 Casamientos',
                         'xv_anos' => '📁 XV Años',
-                        'bautizos' => '📁 Bautizos',
                         'decoracion' => '📁 Decoración General',
-                        'otros' => '📁 Otros Eventos',
-                        'general' => '📁 General',
+                        'otros_eventos' => '📁 Otros Eventos', 
                     ])
-                    ->default('general')
+                    ->default('otros_eventos') 
                     ->required(),
                 
                 FileUpload::make('imagen')

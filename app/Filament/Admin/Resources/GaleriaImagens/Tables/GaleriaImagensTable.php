@@ -31,10 +31,10 @@ class GaleriaImagensTable
                     ->label('Tipo')
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'cumpleaños' => '🎂 Cumpleaños',
-                        'boda' => '💍 Boda',
-                        'xv_años' => '✨ XV Años',
-                        'bautizo' => '🎁 Bautizo',
+                        'cumpleanos' => '🎂 Cumpleaños', 
+                        'casamiento' => '💍 Casamiento', 
+                        'xv_anos' => '✨ XV Años', 
+                        'otros_eventos' => '🎁 Otros Eventos', 
                         default => $state,
                     }),
                 
@@ -43,12 +43,10 @@ class GaleriaImagensTable
                     ->badge()
                     ->formatStateUsing(fn (string $state): string => match ($state) {
                         'cumpleanos' => '📁 Cumpleaños',
-                        'bodas' => '📁 Bodas',
+                        'casamiento' => '📁 Casamientos', 
                         'xv_anos' => '📁 XV Años',
-                        'bautizos' => '📁 Bautizos',
                         'decoracion' => '📁 Decoración',
-                        'otros' => '📁 Otros',
-                        'general' => '📁 General',
+                        'otros_eventos' => '📁 Otros Eventos', 
                         default => '📁 ' . ucfirst($state),
                     }),
                 

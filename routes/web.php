@@ -15,24 +15,15 @@ use App\Livewire\Eventos;
 use App\Livewire\Reservas;
 use App\Http\Livewire\Dashboard;
 
-/*
-|--------------------------------------------------------------------------
-| RUTAS PÚBLICAS (Sin autenticación)
-|--------------------------------------------------------------------------
-| Estas son las rutas de la página web pública
-*/
+/* RUTAS PÚBLICAS (Sin autenticación)| Estas son las rutas de la página web pública*/
 
 Route::get('/', [PublicController::class, 'index'])->name('home');
 Route::get('/servicios-publicos', [PublicController::class, 'servicios'])->name('servicios.publicos');
+Route::get('/eventos/{tipo}', [PublicController::class, 'eventoDetalle'])->name('eventos.detalle');
 Route::get('/contacto', [PublicController::class, 'contacto'])->name('contacto');
 Route::post('/contacto', [PublicController::class, 'enviarContacto'])->name('contacto.send');
 
-/*
-|--------------------------------------------------------------------------
-| RUTAS PRIVADAS (Con autenticación)
-|--------------------------------------------------------------------------
-| Dashboard y sistema de gestión interno
-*/
+/* RUTAS PRIVADAS (Con autenticación) Dashboard y sistema de gestión interno*/
 
 Route::get('dashboard', Dashboard::class)
     ->middleware(['auth', 'verified'])
