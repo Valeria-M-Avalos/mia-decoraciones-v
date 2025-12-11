@@ -41,9 +41,10 @@ class Evento extends Model
 
     public function servicios()
     {
-        return $this->belongsToMany(Servicio::class, 'evento_servicio')
-                    ->withPivot(['cantidad', 'precio'])
-                    ->withTimestamps();
+       return $this->belongsToMany(Servicio::class, 'evento_servicio')
+    ->withPivot(['cantidad', 'precio', 'descripcion_personalizada'])
+    ->withTimestamps();
+
     }
 
     public function getTituloAttribute($value)
