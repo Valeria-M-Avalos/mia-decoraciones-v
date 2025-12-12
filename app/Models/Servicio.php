@@ -12,18 +12,14 @@ class Servicio extends Model
         'precio'
     ];
 
-    // Capitalizar automáticamente
     public function getNombreAttribute($value)
     {
         return ucwords($value);
     }
 
-    public function eventos()
-{
-    return $this->belongsToMany(Evento::class, 'evento_servicio')
-                ->withPivot(['cantidad', 'precio'])
-                ->withTimestamps();
+    // 🔥 Relación opcional (solo para consulta)
+    public function eventoServicios()
+    {
+        return $this->hasMany(EventoServicio::class);
+    }
 }
-
-}
-
