@@ -20,7 +20,7 @@ class GaleriaImagenForm
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                
+
                 Textarea::make('descripcion')
                     ->label('Descripción')
                     ->rows(3)
@@ -31,30 +31,33 @@ class GaleriaImagenForm
                     ->rows(4)
                     ->helperText('Pega aquí el código HTML completo de Instagram (Embed Code).')
                     ->columnSpanFull(),
-                
+
+                // ⚠️ CORREGIDO: Ahora guarda valores normalizados
                 Select::make('tipo_evento')
                     ->label('Tipo de Evento')
                     ->options([
-                        'cumpleaños' => '🎂 Cumpleaños',
-                        'Casamiento' => '💍 Casamiento',
-                        'xv_años' => '✨ XV Años',
-                        'bautizo' => '🎁 Otros Eventos',
+                        'cumpleanos' => '🎂 Cumpleaños',
+                        'casamiento' => '💒 Casamiento',
+                        'xv_anos' => '👑 XV Años',
+                        'otros_eventos' => '🎉 Otros Eventos',
                     ])
-                    ->required(),
-                
+                    ->required()
+                    ->helperText('Este valor debe coincidir con las categorías de la web pública'),
+
+                // ⚠️ CORREGIDO: Ahora guarda valores normalizados
                 Select::make('categoria')
                     ->label('Carpeta / Categoría')
                     ->options([
                         'cumpleanos' => '📁 Cumpleaños',
                         'casamiento' => '📁 Casamiento',
                         'xv_anos' => '📁 XV Años',
+                        'otros_eventos' => '📁 Otros Eventos (Bautismo, Baby Shower, etc.)',
                         'decoracion' => '📁 Decoración General',
-                        'otros' => '📁 Otros Eventos',
-                        
                     ])
-                    ->default('general')
-                    ->required(),
-                
+                    ->default('otros_eventos')
+                    ->required()
+                    ->helperText('IMPORTANTE: Usa "otros_eventos" para bautismos, baby showers, etc.'),
+
                 FileUpload::make('imagen')
                     ->label('Imagen')
                     ->image()
@@ -70,20 +73,21 @@ class GaleriaImagenForm
                 FileUpload::make('archivo_video')
                     ->label('Subir Archivo de Video')
                     ->disk('public')
-                    ->directory('galeria-videos') // Los archivos se guardarán en storage/app/public/galeria-videos
-                    ->acceptedFileTypes(['video/mp4', 'video/quicktime', 'video/webm']) // Tipos de video comunes
-                    ->maxSize(50240) // 50MB (Ajusta este límite según tus necesidades de hosting)
+                    ->directory('galeria-videos')
+                    ->acceptedFileTypes(['video/mp4', 'video/quicktime', 'video/webm'])
+                    ->maxSize(50240) // 50MB
                     ->columnSpanFull()
                     ->helperText('Sube un archivo de video (MP4, MOV, WebM). Máximo 50MB.'),
-                
+
                 Toggle::make('destacada')
                     ->label('Mostrar en página principal')
                     ->default(false),
-                
+
                 TextInput::make('orden')
                     ->label('Orden')
                     ->numeric()
-                    ->default(0),
+                    ->default(0)
+                    ->helperText('Menor número = aparece primero'),
             ]);
     }
 }

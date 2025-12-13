@@ -6,7 +6,6 @@ use App\Models\GaleriaImagen;
 use App\Models\Servicio;
 use App\Models\Solicitud;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 
 class PublicController extends Controller
 {
@@ -28,7 +27,7 @@ class PublicController extends Controller
         $servicios = Servicio::all();
         $imagenesPorTipo = [];
 
-        // Tipos de eventos que ofreces (USANDO SLUGS LIMPIOS PARA URLs y DB)
+        // ✅ CORREGIDO: Tipos de eventos normalizados
         $tiposEventos = [
             [
                 'nombre' => 'Cumpleaños',
@@ -41,32 +40,34 @@ class PublicController extends Controller
                 'nombre' => 'Casamientos',
                 'slug' => 'casamiento',
                 'descripcion' => 'El día más especial de tu vida merece una decoración inolvidable.',
-                'emoji' => '💍',
+                'emoji' => '💒',
                 'icono' => 'heroicon-o-heart',
             ],
             [
                 'nombre' => 'XV Años',
                 'slug' => 'xv_anos',
                 'descripcion' => 'Quinceañeras de ensueño con decoraciones que reflejan tu personalidad.',
-                'emoji' => '✨',
+                'emoji' => '👑',
                 'icono' => 'heroicon-o-sparkles',
             ],
             [
-                'nombre' => 'Otros Eventos', 
+                'nombre' => 'Otros Eventos',
                 'slug' => 'otros_eventos',
-                'descripcion' => 'Eventos personalizados que se adaptan a tu visión (incluye bautizos, comuniones, etc.).',
-                'emoji' => '🎁',
+                'descripcion' => 'Eventos personalizados: bautizos, baby showers, comuniones y más.',
+                'emoji' => '🎉',
                 'icono' => 'heroicon-o-gift',
             ],
         ];
 
-        // Obtener imágenes por tipo
+        // ✅ CORREGIDO: Obtener imágenes por tipo (busca por slug normalizado)
         foreach ($tiposEventos as $tipo) {
-            $imagenesPorTipo[$tipo['slug']] = GaleriaImagen::where('tipo_evento', $tipo['slug'])
-                ->orWhere('categoria', $tipo['slug'])
-                ->orderByDesc('destacada')
-                ->take(1)
-                ->first();
+            $imagenesPorTipo[$tipo['slug']] = GaleriaImagen::where(function($query) use ($tipo) {
+                $query->where('tipo_evento', $tipo['slug'])
+                      ->orWhere('categoria', $tipo['slug']);
+            })
+            ->orderByDesc('destacada')
+            ->orderBy('orden')
+            ->first();
         }
 
         return view('public.servicios', compact('servicios', 'tiposEventos', 'imagenesPorTipo'));
@@ -77,39 +78,67 @@ class PublicController extends Controller
      */
     public function eventoDetalle($tipo)
     {
-        // Mapeo de slugs a información del evento. **USANDO SLUGS LIMPIOS**
+        // ✅ CORREGIDO: Mapeo normalizado
         $eventosInfo = [
-            'cumpleanos' => [ 
-                'titulo' => 'Cumpleaños', 
+            'cumpleanos' => [
+                'titulo' => 'Cumpleaños',
                 'slug' => 'cumpleanos',
-                'tipo_bd' => 'cumpleanos',
                 'emoji' => '🎂',
                 'descripcion' => 'Celebramos contigo cada año de vida con decoraciones únicas y personalizadas.',
-                'historia' => 'Cada cumpleaños es una historia por contar. Transformamos tus ideas en realidad.',
+                'historia' => 'Cada cumpleaños es una historia por contar. Transformamos tus ideas en espacios mágicos llenos de color, alegría y detalles que hacen de tu celebración algo verdaderamente especial. Desde el primer añito hasta los cumpleaños más importantes, creamos ambientes que reflejan la personalidad del festejado.',
+                'detalles' => [
+                    '🎈 Decoración temática personalizada',
+                    '🎂 Ambientación completa del salón',
+                    '🎁 Mesa de dulces y candy bar',
+                    '🎪 Espacios para juegos y entretenimiento',
+                    '📸 Rincones instagrameables',
+                    '✨ Iluminación ambiental',
+                ],
             ],
-            'casamiento' => [ 
+            'casamiento' => [
                 'titulo' => 'Casamientos',
                 'slug' => 'casamiento',
-                'tipo_bd' => 'casamiento',
-                'emoji' => '💍',
+                'emoji' => '💒',
                 'descripcion' => 'El día más importante merece la decoración más hermosa.',
-                'historia' => 'Cada casamiento es único. Creamos una decoración que cuente vuestra historia.',
+                'historia' => 'Cada casamiento es único y cuenta una historia de amor. Diseñamos cada detalle para que tu boda sea el reflejo perfecto de vuestra historia juntos. Desde la ceremonia hasta la recepción, creamos ambientes románticos y elegantes que harán de tu día el más memorable.',
+                'detalles' => [
+                    '💐 Decoración floral personalizada',
+                    '🕯️ Iluminación romántica',
+                    '🎊 Ambientación de ceremonia y salón',
+                    '🍾 Decoración de mesas y sillas',
+                    '💍 Espacios para fotos inolvidables',
+                    '✨ Detalles exclusivos para novios',
+                ],
             ],
-            'xv_anos' => [ 
+            'xv_anos' => [
                 'titulo' => 'XV Años',
                 'slug' => 'xv_anos',
-                'tipo_bd' => 'xv_anos',
-                'emoji' => '✨',
+                'emoji' => '👑',
                 'descripcion' => 'Quinceañeras de ensueño que reflejan tu estilo.',
-                'historia' => 'Diseñamos cada detalle para que brilles en tu noche especial.',
+                'historia' => 'Tus quince años son un momento único e irrepetible. Diseñamos cada detalle para que brilles en tu noche especial. Desde decoraciones de princesa hasta estilos modernos y elegantes, creamos el ambiente perfecto para tu celebración de ensueño.',
+                'detalles' => [
+                    '👑 Decoración temática exclusiva',
+                    '💃 Pista de baile decorada',
+                    '📷 Espacios fotográficos únicos',
+                    '🎀 Mesa de honor especial',
+                    '✨ Iluminación y efectos especiales',
+                    '🎵 Ambientación musical',
+                ],
             ],
             'otros_eventos' => [
                 'titulo' => 'Otros Eventos',
                 'slug' => 'otros_eventos',
-                'tipo_bd' => 'otros_eventos',
-                'emoji' => '🎁',
-                'descripcion' => 'Eventos personalizados que se adaptan a tu visión (Bautizos, Comuniones, etc.).',
-                'historia' => 'Transformamos tus ideas en el ambiente perfecto.',
+                'emoji' => '🎉',
+                'descripcion' => 'Eventos personalizados que se adaptan a tu visión: Bautizos, Baby Showers, Comuniones y más.',
+                'historia' => 'Cada celebración es especial y merece una decoración única. Ya sea un bautizo, baby shower, comunión, aniversario o cualquier evento especial, diseñamos ambientes personalizados que reflejan el espíritu de la ocasión y crean momentos memorables para ti y tus invitados.',
+                'detalles' => [
+                    '👶 Bautizos y primeras comuniones',
+                    '🍼 Baby showers temáticos',
+                    '🎃 Fiestas temáticas (Halloween, Navidad)',
+                    '💝 Aniversarios y celebraciones',
+                    '🎓 Graduaciones',
+                    '✨ Eventos corporativos pequeños',
+                ],
             ],
         ];
 
@@ -119,14 +148,16 @@ class PublicController extends Controller
 
         $evento = $eventosInfo[$tipo];
 
-        // Búsqueda de imágenes (usa el slug limpio)
-        $imagenes = GaleriaImagen::where('categoria', $evento['slug'])
-            ->orWhere('tipo_evento', $evento['tipo_bd']) 
-            ->orderBy('orden')
-            ->get();
+        // ✅ CORREGIDO: Búsqueda de imágenes normalizada
+        $imagenes = GaleriaImagen::where(function($query) use ($evento) {
+            $query->where('categoria', $evento['slug'])
+                  ->orWhere('tipo_evento', $evento['slug']);
+        })
+        ->orderBy('orden')
+        ->get();
 
-        // Traer todos los servicios.
-        $servicios = Servicio::all(); 
+        // Traer todos los servicios
+        $servicios = Servicio::all();
 
         return view('public.evento-detalle', compact('evento', 'imagenes', 'servicios'));
     }
