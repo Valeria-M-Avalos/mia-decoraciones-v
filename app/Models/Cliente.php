@@ -8,8 +8,9 @@ class Cliente extends Model
 {
     protected $fillable = [
         'nombre',
-        'email',
-        'telefono'
+    'apellido',
+    'email',
+    'telefono',
     ];
 
     // Capitaliza el nombre automáticamente al mostrarlo

@@ -17,5 +17,13 @@ class Servicio extends Model
     {
         return ucwords($value);
     }
+
+    public function eventos()
+{
+    return $this->belongsToMany(Evento::class, 'evento_servicio')
+                ->withPivot(['cantidad', 'precio'])
+                ->withTimestamps();
+}
+
 }
 

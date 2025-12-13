@@ -7,36 +7,52 @@ use Illuminate\Database\Eloquent\Model;
 class Evento extends Model
 {
     protected $fillable = [
-        'cliente_id',
-        'titulo',
-        'descripcion',
-        'fecha',
-        'hora',
-        'lugar',
-        'tipo_evento',
-        'invitados',
-        'costo',
-        'estado',
+          'cliente_id',
+    'titulo',
+    'descripcion',
+    'fecha',
+    'hora',
+    'lugar',
+    'tipo_evento',
+    'invitados',
+    'costo_base',
+    'costo_por_invitado',
+    'costo',
+    'estado',
     ];
 
-    /** RELACIÓN: Un evento pertenece a un cliente */
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::saving(function ($evento) {
+
+            if ($evento->costo_base !== null && $evento->costo_por_invitado !== null) {
+                $evento->costo =
+                    $evento->costo_base + ($evento->invitados * $evento->costo_por_invitado);
+            }
+        });
+    }
+
     public function cliente()
     {
         return $this->belongsTo(Cliente::class);
     }
 
-    /** CAPITALIZACIÓN AUTOMÁTICA */
+    public function servicios()
+    {
+       return $this->belongsToMany(Servicio::class, 'evento_servicio')
+    ->withPivot(['cantidad', 'precio', 'descripcion_personalizada'])
+    ->withTimestamps();
+
+    }
+
     public function getTituloAttribute($value)
     {
         return ucwords($value);
     }
 
     public function getLugarAttribute($value)
-    {
-        return ucwords($value);
-    }
-
-    public function getTipoEventoAttribute($value)
     {
         return ucwords($value);
     }
