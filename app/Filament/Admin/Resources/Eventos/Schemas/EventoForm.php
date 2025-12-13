@@ -17,197 +17,153 @@ class EventoForm
         return $schema
             ->components([
 
-                // --------------------------------
-                // TITULO / DESCRIPCIÓN
-                // --------------------------------
+                // ============================
+                // DATOS GENERALES
+                // ============================
                 TextInput::make('titulo')
+                    ->label('Título del evento')
                     ->required(),
 
                 Textarea::make('descripcion')
+                    ->label('Descripción')
                     ->columnSpanFull(),
 
-                // --------------------------------
-                // FECHA / HORA
-                // --------------------------------
                 DatePicker::make('fecha')
                     ->required(),
 
                 TimePicker::make('hora')
                     ->required(),
 
-                // --------------------------------
-                // LUGAR
-                // --------------------------------
                 TextInput::make('lugar'),
 
-                // --------------------------------
+                // ============================
                 // TIPO DE EVENTO
-                // --------------------------------
+                // ============================
                 Select::make('tipo_evento')
                     ->label('Tipo de evento')
                     ->options([
                         'cumpleanos' => 'Cumpleaños',
-                        'casamiento' => 'Casamiento',
                         '15' => 'Fiesta de 15 Años',
+                        'casamiento' => 'Casamiento',
+                        'bautismo' => 'Bautismo',
+                        'baby_shower' => 'Baby Shower',
+                        'aniversario' => 'Aniversario',
+                        'reunion_familiar' => 'Reunión Familiar',
+                        'corporativo' => 'Evento Corporativo',
                         'otros' => 'Otros',
                     ])
+                    ->searchable()
                     ->required(),
 
-                // --------------------------------
-                // INVITADOS
-                // --------------------------------
+                // ============================
+                // COSTOS
+                // ============================
                 TextInput::make('invitados')
-                    ->label('Invitados')
+                    ->label('Cantidad de invitados')
+                    ->numeric()
                     ->required()
-                    ->inputMode('numeric')
-                    ->extraInputAttributes(['pattern' => '[0-9]*'])
-                    ->debounce(500)
-                    ->afterStateUpdated(function ($state, $set, $get) {
-                        $invitados = intval($state);
-                        $precioInv = intval($get('costo_por_invitado') ?? 0);
-                        $base = intval($get('costo_base') ?? 0);
-                        $set('costo', $base + ($invitados * $precioInv));
-                    }),
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, $set, $get) =>
+                        $set('costo',
+                            ($get('costo_base') ?? 0) +
+                            ($state * ($get('costo_por_invitado') ?? 0))
+                        )
+                    ),
 
-                // --------------------------------
-                // COSTO BASE
-                // --------------------------------
                 TextInput::make('costo_base')
                     ->label('Costo base')
+                    ->numeric()
                     ->required()
-                    ->inputMode('numeric')
-                    ->extraInputAttributes(['pattern' => '[0-9]*'])
-                    ->debounce(500)
-                    ->afterStateUpdated(function ($state, $set, $get) {
-                        $base = intval($state);
-                        $invitados = intval($get('invitados') ?? 0);
-                        $precioInv = intval($get('costo_por_invitado') ?? 0);
-                        $set('costo', $base + ($invitados * $precioInv));
-                    }),
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, $set, $get) =>
+                        $set('costo',
+                            $state +
+                            (($get('invitados') ?? 0) * ($get('costo_por_invitado') ?? 0))
+                        )
+                    ),
 
-                // --------------------------------
-                // COSTO POR INVITADO
-                // --------------------------------
                 TextInput::make('costo_por_invitado')
                     ->label('Costo por invitado')
+                    ->numeric()
                     ->required()
-                    ->inputMode('numeric')
-                    ->extraInputAttributes(['pattern' => '[0-9]*'])
-                    ->debounce(500)
-                    ->afterStateUpdated(function ($state, $set, $get) {
-                        $precioInv = intval($state);
-                        $invitados = intval($get('invitados') ?? 0);
-                        $base = intval($get('costo_base') ?? 0);
-                        $set('costo', $base + ($invitados * $precioInv));
-                    }),
+                    ->reactive()
+                    ->afterStateUpdated(fn ($state, $set, $get) =>
+                        $set('costo',
+                            ($get('costo_base') ?? 0) +
+                            (($get('invitados') ?? 0) * $state)
+                        )
+                    ),
 
-                // --------------------------------
-                // COSTO TOTAL (CALCULADO)
-                // --------------------------------
                 TextInput::make('costo')
-                    ->label('Costo total (calculado)')
+                    ->label('Costo total')
                     ->disabled(),
 
-                // --------------------------------
-                // SELECTOR DE CLIENTE
-                // --------------------------------
+                // ============================
+                // CLIENTE
+                // ============================
                 Select::make('cliente_id')
                     ->label('Cliente')
                     ->options(
                         \App\Models\Cliente::query()
                             ->orderBy('nombre')
                             ->get()
-                            ->mapWithKeys(function ($cliente) {
-                                return [
-                                    $cliente->id =>
-                                        $cliente->nombre . ' ' .
-                                        $cliente->apellido . ' — ' .
-                                        $cliente->telefono
-                                ];
-                            })
+                            ->mapWithKeys(fn ($c) => [
+                                $c->id => "{$c->nombre} {$c->apellido} — {$c->telefono}"
+                            ])
                     )
                     ->searchable()
                     ->required(),
 
-                // --------------------------------
+                // ============================
                 // ESTADO
-                // --------------------------------
-                TextInput::make('estado')
-                    ->required()
-                    ->default('Pendiente'),
+                // ============================
+                Select::make('estado')
+                    ->label('Estado del evento')
+                    ->options([
+                        'Pendiente' => 'Pendiente',
+                        'Confirmado' => 'Confirmado',
+                        'Cancelado' => 'Cancelado',
+                    ])
+                    ->default('Pendiente')
+                    ->required(),
 
-                // --------------------------------
-                // SERVICIOS DEL EVENTO
-                // --------------------------------
-Repeater::make('servicios')
-    ->relationship('servicios')
-    ->schema([
+                // ============================
+                // SERVICIOS
+                // ============================
+                Repeater::make('servicios')
+            
+                    ->schema([
 
-        // ------------------------
-        // SELECT SERVICIO
-        // ------------------------
-        Select::make('servicio_id')
-            ->label('Servicio')
-            ->options(\App\Models\Servicio::pluck('nombre', 'id'))
-            ->searchable()
-            ->reactive()
-            ->required(),
+                        Select::make('servicio_id')
+                            ->label('Servicio')
+                            ->options(\App\Models\Servicio::pluck('nombre', 'id'))
+                            ->searchable()
+                            ->reactive()
+                            ->required(),
 
-        // ------------------------
-        // CANTIDAD (solo si NO es personalizado)
-        // ------------------------
-        TextInput::make('cantidad')
-            ->label('Cantidad')
-            ->default(1)
-            ->inputMode('numeric')
-            ->extraInputAttributes(['pattern' => '[0-9]*'])
-            ->reactive()
-            ->visible(fn ($get) =>
-                intval($get('servicio_id')) !== 7
-            ),
+                        TextInput::make('cantidad')
+                            ->label('Cantidad')
+                            ->numeric()
+                            ->default(1)
+                            ->visible(fn ($get) => $get('servicio_id') != 7)
+                            ->required(fn ($get) => $get('servicio_id') != 7),
 
-        // ------------------------
-        // PRECIO NORMAL (solo si NO es personalizado)
-        // ------------------------
-        TextInput::make('precio')
-            ->label('Precio del servicio')
-            ->inputMode('numeric')
-            ->extraInputAttributes(['pattern' => '[0-9]*'])
-            ->reactive()
-            ->visible(fn ($get) =>
-                intval($get('servicio_id')) !== 7
-            ),
+                        TextInput::make('precio')
+                            ->label('Precio')
+                            ->numeric()
+                            ->visible(fn ($get) => $get('servicio_id') != 7)
+                            ->required(fn ($get) => $get('servicio_id') != 7),
 
-        // ------------------------
-        // DESCRIPCIÓN PERSONALIZADA (solo si elige personalizado)
-        // ------------------------
-        Textarea::make('descripcion_personalizada')
-            ->label('Descripción personalizada')
-            ->placeholder('Ingrese los detalles del servicio solicitado por el cliente...')
-            ->columnSpanFull()
-            ->reactive()
-            ->visible(fn ($get) =>
-                intval($get('servicio_id')) === 7
-            ),
-
-        // ------------------------
-        // PRECIO PERSONALIZADO (solo si es personalizado)
-        // ------------------------
-        TextInput::make('precio_personalizado')
-            ->label('Precio personalizado')
-            ->placeholder('Ingrese el precio acordado con el cliente')
-            ->inputMode('numeric')
-            ->extraInputAttributes(['pattern' => '[0-9]*'])
-            ->reactive()
-            ->visible(fn ($get) =>
-                intval($get('servicio_id')) === 7
-            ),
-
-    ])
-    ->columns(3)
-    ->label('Servicios del Evento'),
-
-
+                        Textarea::make('descripcion_personalizada')
+                            ->label('Descripción personalizada')
+                            ->placeholder('Detalle solicitado por el cliente')
+                            ->columnSpanFull()
+                            ->visible(fn ($get) => $get('servicio_id') == 7)
+                            ->required(fn ($get) => $get('servicio_id') == 7),
+                    ])
+                    ->minItems(1)
+                    ->columns(3)
+                    ->label('Servicios del evento'),
             ]);
     }
 }
