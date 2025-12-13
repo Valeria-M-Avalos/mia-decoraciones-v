@@ -15,11 +15,16 @@ class ClientesTable
         return $table
             ->columns([
                 TextColumn::make('nombre')
+                    ->label('Nombre')
+                    ->searchable(),
+                TextColumn::make('apellido')
+                    ->label('Apellido')
                     ->searchable(),
                 TextColumn::make('email')
                     ->label('Email address')
                     ->searchable(),
                 TextColumn::make('telefono')
+                    ->label('Teléfono')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
