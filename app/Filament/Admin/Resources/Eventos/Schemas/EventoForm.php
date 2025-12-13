@@ -2,6 +2,8 @@
 
 namespace App\Filament\Admin\Resources\Eventos\Schemas;
 
+use App\Enums\TipoEvento;
+
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -9,114 +11,36 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TimePicker;
 use Filament\Schemas\Schema;
+use Filament\Forms\Components\Placeholder;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 
 class EventoForm
 {
     public static function configure(Schema $schema): Schema
     {
         return $schema
+            ->columns(2)
             ->components([
 
-                // ============================
-                // DATOS GENERALES
-                // ============================
                 TextInput::make('titulo')
-                    ->label('Título del evento')
                     ->required(),
 
                 Textarea::make('descripcion')
-                    ->label('Descripción')
                     ->columnSpanFull(),
 
-                DatePicker::make('fecha')
-                    ->required(),
-
-                TimePicker::make('hora')
-                    ->required(),
+                DatePicker::make('fecha')->required(),
+                TimePicker::make('hora')->required(),
 
                 TextInput::make('lugar'),
 
-                // ============================
-                // TIPO DE EVENTO
-                // ============================
                 Select::make('tipo_evento')
-                    ->label('Tipo de evento')
-                    ->options([
-                        'cumpleanos' => 'Cumpleaños',
-                        '15' => 'Fiesta de 15 Años',
-                        'casamiento' => 'Casamiento',
-                        'bautismo' => 'Bautismo',
-                        'baby_shower' => 'Baby Shower',
-                        'aniversario' => 'Aniversario',
-                        'reunion_familiar' => 'Reunión Familiar',
-                        'corporativo' => 'Evento Corporativo',
-                        'otros' => 'Otros',
-                    ])
-                    ->searchable()
-                    ->required(),
+    ->label('Tipo de evento')
+    ->options(TipoEvento::options())
+    ->required(),
 
-                // ============================
-                // COSTOS
-                // ============================
-                TextInput::make('invitados')
-                    ->label('Cantidad de invitados')
-                    ->numeric()
-                    ->required()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, $set, $get) =>
-                        $set('costo',
-                            ($get('costo_base') ?? 0) +
-                            ($state * ($get('costo_por_invitado') ?? 0))
-                        )
-                    ),
 
-                TextInput::make('costo_base')
-                    ->label('Costo base')
-                    ->numeric()
-                    ->required()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, $set, $get) =>
-                        $set('costo',
-                            $state +
-                            (($get('invitados') ?? 0) * ($get('costo_por_invitado') ?? 0))
-                        )
-                    ),
-
-                TextInput::make('costo_por_invitado')
-                    ->label('Costo por invitado')
-                    ->numeric()
-                    ->required()
-                    ->reactive()
-                    ->afterStateUpdated(fn ($state, $set, $get) =>
-                        $set('costo',
-                            ($get('costo_base') ?? 0) +
-                            (($get('invitados') ?? 0) * $state)
-                        )
-                    ),
-
-                TextInput::make('costo')
-                    ->label('Costo total')
-                    ->disabled(),
-
-                // ============================
-                // CLIENTE
-                // ============================
-                Select::make('cliente_id')
-                    ->label('Cliente')
-                    ->options(
-                        \App\Models\Cliente::query()
-                            ->orderBy('nombre')
-                            ->get()
-                            ->mapWithKeys(fn ($c) => [
-                                $c->id => "{$c->nombre} {$c->apellido} — {$c->telefono}"
-                            ])
-                    )
-                    ->searchable()
-                    ->required(),
-
-                // ============================
-                // ESTADO
-                // ============================
+                // ✅ ESTADO DEBAJO DE TIPO (como pediste)
                 Select::make('estado')
                     ->label('Estado del evento')
                     ->options([
@@ -127,43 +51,109 @@ class EventoForm
                     ->default('Pendiente')
                     ->required(),
 
-                // ============================
-                // SERVICIOS
-                // ============================
-                Repeater::make('servicios')
-            
-                    ->schema([
+                TextInput::make('invitados')
+                    ->numeric()
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $set('costo',
+                            ($get('costo_base') ?? 0) +
+                            ((float) $state * ($get('costo_por_invitado') ?? 0))
+                        );
+                    }),
 
+                TextInput::make('costo_base')
+                    ->numeric()
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $set('costo',
+                            (float) $state +
+                            (($get('invitados') ?? 0) * ($get('costo_por_invitado') ?? 0))
+                        );
+                    }),
+
+                TextInput::make('costo_por_invitado')
+                    ->numeric()
+                    ->required()
+                    ->reactive()
+                    ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $set('costo',
+                            ($get('costo_base') ?? 0) +
+                            (($get('invitados') ?? 0) * (float) $state)
+                        );
+                    }),
+
+                TextInput::make('costo')
+                    ->label('Costo del evento')
+                    ->disabled()
+                    ->numeric(),
+
+                Select::make('cliente_id')
+                    ->label('Cliente')
+                    ->options(
+                        \App\Models\Cliente::orderBy('nombre')->get()
+                            ->mapWithKeys(fn ($c) => [
+                                $c->id => "{$c->nombre} {$c->apellido} — {$c->telefono}"
+                            ])
+                    )
+                    ->searchable()
+                    ->required(),
+
+                // -------------------------
+                // ✅ REPEATER (sigue igual)
+                // -------------------------
+                Repeater::make('servicios')
+                    ->label('Servicios del evento')
+                    ->schema([
                         Select::make('servicio_id')
                             ->label('Servicio')
                             ->options(\App\Models\Servicio::pluck('nombre', 'id'))
                             ->searchable()
-                            ->reactive()
                             ->required(),
 
                         TextInput::make('cantidad')
-                            ->label('Cantidad')
                             ->numeric()
                             ->default(1)
-                            ->visible(fn ($get) => $get('servicio_id') != 7)
-                            ->required(fn ($get) => $get('servicio_id') != 7),
+                            ->required(),
 
                         TextInput::make('precio')
-                            ->label('Precio')
+                            ->label('Precio del servicio')
                             ->numeric()
-                            ->visible(fn ($get) => $get('servicio_id') != 7)
-                            ->required(fn ($get) => $get('servicio_id') != 7),
-
-                        Textarea::make('descripcion_personalizada')
-                            ->label('Descripción personalizada')
-                            ->placeholder('Detalle solicitado por el cliente')
-                            ->columnSpanFull()
-                            ->visible(fn ($get) => $get('servicio_id') == 7)
-                            ->required(fn ($get) => $get('servicio_id') == 7),
+                            ->required(),
                     ])
-                    ->minItems(1)
                     ->columns(3)
-                    ->label('Servicios del evento'),
+                    ->minItems(1)
+                    ->columnSpanFull(),
+
+                // ✅ Total servicios (VISUAL)
+                Placeholder::make('total_servicios')
+                    ->label('Total de servicios')
+                    ->content(function (Get $get) {
+                        $total = 0;
+
+                        foreach (($get('servicios') ?? []) as $item) {
+                            $total += ((float) ($item['cantidad'] ?? 1)) * ((float) ($item['precio'] ?? 0));
+                        }
+
+                        return '$' . number_format($total, 0, ',', '.');
+                    }),
+
+                // ✅ Total general (evento + servicios) (VISUAL)
+                // (queda del lado derecho por columns(2), cerca de los costos)
+                Placeholder::make('total_general')
+                    ->label('Total general del evento')
+                    ->content(function (Get $get) {
+                        $totalServicios = 0;
+
+                        foreach (($get('servicios') ?? []) as $item) {
+                            $totalServicios += ((float) ($item['cantidad'] ?? 1)) * ((float) ($item['precio'] ?? 0));
+                        }
+
+                        $costoEvento = (float) ($get('costo') ?? 0);
+
+                        return '$' . number_format($costoEvento + $totalServicios, 0, ',', '.');
+                    }),
             ]);
     }
 }

@@ -51,7 +51,7 @@ class EventosTable
                     ->sortable(),
 
                 // ✅ COSTO SIN "PESOS"
-                TextColumn::make('costo')
+                TextColumn::make('costo_general')
                     ->label('Costo')
                     ->sortable()
                     ->formatStateUsing(fn ($state) =>
