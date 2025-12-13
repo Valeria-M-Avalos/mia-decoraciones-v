@@ -5,7 +5,7 @@
 @section('content')
 
 <!-- Hero Section -->
-<section class="relative py-24 bg-gradient-to-br from-pink-50 via-white to-yellow-50 overflow-hidden">
+<section class="relative py-24 bg-gradient-to-br from-pink-200 via-white to-yellow-100 overflow-hidden">
     <div class="absolute inset-0 opacity-5">
         <div class="absolute inset-0" style="background-image: radial-gradient(circle at 2px 2px, #ec4899 1px, transparent 0); background-size: 40px 40px;"></div>
     </div>
@@ -131,11 +131,6 @@
                                 ${{ number_format($servicio->precio, 2) }}
                             </p>
                         </div>
-                        <div class="w-10 h-10 bg-pink-500 rounded-full flex items-center justify-center group-hover:bg-pink-600 transition-colors">
-                            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
-                        </div>
                     </div>
                     @endif
                 </div>
@@ -177,7 +172,7 @@
 </section>
 
 <!-- Proceso -->
-<section class="py-20 bg-gradient-to-br from-pink-50 to-yellow-50">
+<section class="py-20 bg-gradient-to-br from-pink-100 to-yellow-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <h2 class="text-4xl font-bold text-gray-800 mb-4">Nuestro Proceso</h2>

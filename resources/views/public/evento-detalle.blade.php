@@ -168,7 +168,7 @@
 @endphp
 
 @if($videos->count() > 0)
-<section class="py-24 bg-gradient-to-br from-pink-50 to-yellow-50">
+<section class="py-24 bg-gradient-to-br from-pink-100 to-yellow-100">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-16">
             <span class="text-pink-600 font-semibold text-sm uppercase tracking-wider">En Movimiento</span>
@@ -227,7 +227,7 @@
             @foreach($servicios as $servicio)
             <div class="group bg-gradient-to-br from-white to-pink-50 rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-300 border border-pink-100 transform hover:scale-105">
                 <!-- Ícono -->
-                <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-pink-600 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform">
+                <div class="w-16 h-16 bg-gradient-to-br from-pink-200 to-pink-200 rounded-full flex items-center justify-center mb-6 mx-auto shadow-lg group-hover:scale-110 transition-transform">
                     @if($servicio->icono)
                     <span class="text-3xl">{{ $servicio->icono }}</span>
                     @else
