@@ -10,8 +10,8 @@ use Flowframe\Trend\TrendValue;
 class EventosChart extends ChartWidget
 {
     protected static ?int $sort = 2;
-    
-    protected int | string | array $columnSpan = 'full';
+
+    protected int | string | array $columnSpan = 1;
 
     protected function getData(): array
     {
@@ -41,7 +41,7 @@ class EventosChart extends ChartWidget
     {
         return 'line';
     }
-    
+
     public function getHeading(): ?string
     {
         return 'Eventos por Mes';

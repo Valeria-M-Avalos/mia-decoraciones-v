@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\DB;
 class IngresosChart extends ChartWidget
 {
     protected static ?int $sort = 3;
-    
-    protected int | string | array $columnSpan = 'full';
+
+    protected int | string | array $columnSpan = 1;
 
     protected function getData(): array
     {
@@ -41,7 +41,7 @@ class IngresosChart extends ChartWidget
     {
         return 'bar';
     }
-    
+
     public function getHeading(): ?string
     {
         return 'Ingresos por Mes';
