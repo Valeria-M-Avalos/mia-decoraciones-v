@@ -18,9 +18,17 @@ class SolicitudResource extends Resource
 {
     protected static ?string $model = Solicitud::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedEnvelope;
 
     protected static ?string $recordTitleAttribute = 'nombre';
+    
+    protected static ?string $navigationLabel = 'Solicitudes';
+    
+    protected static ?string $modelLabel = 'Solicitud';
+    
+    protected static ?string $pluralModelLabel = 'Solicitudes';
+    
+    protected static ?int $navigationSort = 1;
 
     public static function form(Schema $schema): Schema
     {
@@ -46,5 +54,15 @@ class SolicitudResource extends Resource
             'create' => CreateSolicitud::route('/create'),
             'edit' => EditSolicitud::route('/{record}/edit'),
         ];
+    }
+    
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::where('estado', 'pendiente')->count() ?: null;
+    }
+    
+    public static function getNavigationBadgeColor(): ?string
+    {
+        return 'warning';
     }
 }

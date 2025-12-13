@@ -6,6 +6,7 @@ use App\Filament\Admin\Widgets\EventosChart;
 use App\Filament\Admin\Widgets\EventosPorTipoChart;
 use App\Filament\Admin\Widgets\IngresosChart;
 use App\Filament\Admin\Widgets\ReservasStats;
+use App\Filament\Admin\Widgets\ServiciosPopularesChart; // ¡Añadimos este nuevo Chart!
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -35,7 +36,6 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('images/logo.png'))
             ->darkModeBrandLogo(asset('images/logo.png'))
             ->favicon(asset('images/favicon.svg'))
-            ->darkMode(false) 
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => [
@@ -52,18 +52,28 @@ class AdminPanelProvider extends PanelProvider
                     950 => '#4d0d20',
                 ],
             ])
-            ->font('Inter') // Misma fuente que tu sistema
+            ->font('Inter')
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\Filament\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\Filament\Admin\Pages')
             ->pages([
                 Dashboard::class,
             ])
+            ->databaseNotifications()
+            ->databaseNotificationsPolling('30s')
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\Filament\Admin\Widgets')
             ->widgets([
-                ReservasStats::class,
-                EventosChart::class,
-                IngresosChart::class,
-                EventosPorTipoChart::class,
+                // 1. STATS: Ocupan la fila superior y se auto-dividen
+                ReservasStats::class,           
+                
+                // 2. FILA DE GRÁFICOS (SUMA 12 COLUMNAS)
+                EventosChart::class,            // Dándole 6 columnas
+                IngresosChart::class,           // Dándole 6 columnas
+                
+                // 3. FILA DE GRÁFICOS RESTANTES (Ajustamos para 4 + 4 + 4, o dejamos 12/full width)
+                EventosPorTipoChart::class,     // Dándole 4 columnas (si quieres 3 en una fila)
+                ServiciosPopularesChart::class, // Dándole 4 columnas (si quieres 3 en una fila)
+                
+                // Widgets de sistema
                 AccountWidget::class,
             ])
             ->middleware([
