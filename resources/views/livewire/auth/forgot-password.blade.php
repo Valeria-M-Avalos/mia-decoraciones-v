@@ -1,31 +1,37 @@
 <x-layouts.auth>
-    <div class="flex flex-col gap-6">
-        <x-auth-header :title="__('Forgot password')" :description="__('Enter your email to receive a password reset link')" />
+    <div class="mia-card p-8 w-full max-w-[420px] mx-auto">
+        
+        <div class="text-center mb-6">
+            <h2 class="text-xl font-bold text-gray-800">Recuperar Contraseña</h2>
+            <p class="text-sm text-gray-500 mt-2 text-left">
+                ¿Olvidaste tu contraseña? No hay problema. Dinos tu correo electrónico y te enviaremos un enlace para elegir una nueva.
+            </p>
+        </div>
 
-        <!-- Session Status -->
-        <x-auth-session-status class="text-center" :status="session('status')" />
+        <!-- Mensaje de estado de sesión -->
+        <x-auth-session-status class="mb-4 text-center text-green-600 font-medium text-sm" :status="session('status')" />
 
-        <form method="POST" action="{{ route('password.email') }}" class="flex flex-col gap-6">
+        <form method="POST" action="{{ route('password.email') }}" class="flex flex-col gap-5">
             @csrf
 
             <!-- Email Address -->
-            <flux:input
-                name="email"
-                :label="__('Email Address')"
-                type="email"
-                required
-                autofocus
-                placeholder="email@example.com"
-            />
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Correo Electrónico</label>
+                <input type="email" name="email" id="email" class="mia-input" placeholder="ejemplo@correo.com" value="{{ old('email') }}" required autofocus>
+                @error('email') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+            </div>
 
-            <flux:button variant="primary" type="submit" class="w-full" data-test="email-password-reset-link-button">
-                {{ __('Email password reset link') }}
-            </flux:button>
+            <div class="mt-2">
+                <button type="submit" class="btn-mia-primary w-full py-3 text-base shadow-lg shadow-pink-200">
+                    Enviar enlace
+                </button>
+            </div>
+            
+            <div class="mt-2 text-center">
+                <a href="{{ route('login') }}" class="text-sm text-gray-400 hover:text-gray-600 transition">
+                    Volver al login
+                </a>
+            </div>
         </form>
-
-        <div class="space-x-1 rtl:space-x-reverse text-center text-sm text-zinc-400">
-            <span>{{ __('Or, return to') }}</span>
-            <flux:link :href="route('login')" wire:navigate>{{ __('log in') }}</flux:link>
-        </div>
     </div>
 </x-layouts.auth>

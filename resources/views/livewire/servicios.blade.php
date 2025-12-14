@@ -1,88 +1,88 @@
 <div class="p-6">
 
-    <h2 class="text-2xl font-bold mb-6">Gestión de Servicios</h2>
-
-    <!-- BOTÓN NUEVO -->
-    <button wire:click="crear"
-        class="px-4 py-2 mb-4 bg-blue-600 text-white rounded hover:bg-blue-700">
-        + Nuevo servicio
-    </button>
+    <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Gestión de Servicios</h2>
+        <button wire:click="crear" class="btn-mia-primary shadow-lg shadow-pink-200">
+            + Nuevo servicio
+        </button>
+    </div>
 
     <!-- TABLA -->
-    <table class="w-full border-collapse bg-white shadow">
-        <thead>
-            <tr class="bg-gray-100 text-left">
-                <th class="border px-3 py-2">ID</th>
-                <th class="border px-3 py-2">Nombre</th>
-                <th class="border px-3 py-2">Descripción</th>
-                <th class="border px-3 py-2">Precio</th>
-                <th class="border px-3 py-2">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            @forelse ($servicios as $s)
+    <div class="mia-card overflow-hidden !p-0">
+        <table class="w-full">
+            <thead class="bg-gray-50">
                 <tr>
-                    <td class="border px-3 py-2">{{ $s->id }}</td>
-                    <td class="border px-3 py-2">{{ $s->nombre }}</td>
-                    <td class="border px-3 py-2">{{ $s->descripcion }}</td>
-                    <td class="border px-3 py-2">$ {{ number_format($s->precio, 2) }}</td>
-                    <td class="border px-3 py-2">
-                        <button wire:click="editar({{ $s->id }})"
-                            class="px-2 py-1 bg-yellow-500 text-white rounded">Editar</button>
-
-                        <button wire:click="eliminar({{ $s->id }})"
-                            class="px-2 py-1 bg-red-500 text-white rounded">Eliminar</button>
-                    </td>
+                    <th class="mia-table-header px-6">ID</th>
+                    <th class="mia-table-header px-6">Nombre</th>
+                    <th class="mia-table-header px-6">Descripción</th>
+                    <th class="mia-table-header px-6">Precio</th>
+                    <th class="mia-table-header px-6 text-right">Acciones</th>
                 </tr>
-            @empty
-                <tr>
-                    <td colspan="5" class="text-center py-4 text-gray-500">
-                        No hay servicios aún.
-                    </td>
-                </tr>
-            @endforelse
-        </tbody>
-    </table>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @forelse ($servicios as $s)
+                    <tr class="hover:bg-gray-50 transition-colors">
+                        <td class="px-6 py-4 text-sm text-gray-600">#{{ $s->id }}</td>
+                        <td class="px-6 py-4 text-sm font-semibold text-gray-800">{{ $s->nombre }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600 truncate max-w-xs">{{ $s->descripcion }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-700">${{ number_format($s->precio, 2) }}</td>
+                        
+                        <td class="px-6 py-4 text-right space-x-2">
+                            <button wire:click="editar({{ $s->id }})" class="btn-mia-edit">Editar</button>
+                            <button wire:click="eliminar({{ $s->id }})" class="btn-mia-delete">Eliminar</button>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="text-center py-8 text-gray-400">
+                            No hay servicios aún.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
 
-    {{ $servicios->links() }}
+    <div class="mt-4">
+        {{ $servicios->links() }}
+    </div>
 
     <!-- MODAL -->
     @if($modal)
-        <div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-            <div class="bg-white p-6 rounded shadow-lg w-96">
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-50 backdrop-blur-sm flex items-center justify-center z-50 transition-opacity">
+            <div class="bg-white rounded-2xl shadow-xl w-96 overflow-hidden">
 
-                <h3 class="text-xl font-bold mb-4">
-                    {{ $servicio_id ? 'Editar Servicio' : 'Nuevo Servicio' }}
-                </h3>
-
-                <div class="mb-3">
-                    <label>Nombre</label>
-                    <input wire:model="nombre" type="text"
-                        class="w-full border px-3 py-2 rounded">
-                    @error('nombre') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                <div class="bg-gray-50 px-6 py-4 border-b border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800">
+                        {{ $servicio_id ? 'Editar Servicio' : 'Nuevo Servicio' }}
+                    </h3>
                 </div>
 
-                <div class="mb-3">
-                    <label>Descripción</label>
-                    <textarea wire:model="descripcion"
-                        class="w-full border px-3 py-2 rounded"></textarea>
+                <div class="p-6 space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
+                        <input wire:model="nombre" type="text" class="mia-input">
+                        @error('nombre') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Descripción</label>
+                        <textarea wire:model="descripcion" rows="3" class="mia-input"></textarea>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Precio</label>
+                        <input wire:model="precio" type="number" step="0.01" class="mia-input">
+                        @error('precio') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                    </div>
                 </div>
 
-                <div class="mb-3">
-                    <label>Precio</label>
-                    <input wire:model="precio" type="number" step="0.01"
-                        class="w-full border px-3 py-2 rounded">
-                    @error('precio') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                </div>
-
-                <div class="flex justify-end">
-                    <button wire:click="cerrarModal"
-                        class="px-4 py-2 bg-gray-500 text-white rounded mr-2">
+                <div class="bg-gray-50 px-6 py-4 flex justify-end gap-3">
+                    <button wire:click="cerrarModal" class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 font-medium hover:bg-gray-50 transition">
                         Cancelar
                     </button>
 
-                    <button wire:click="guardar"
-                        class="px-4 py-2 bg-green-600 text-white rounded">
+                    <button wire:click="guardar" class="btn-mia-primary">
                         Guardar
                     </button>
                 </div>

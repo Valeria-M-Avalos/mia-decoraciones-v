@@ -8,8 +8,11 @@ class Servicio extends Model
 {
     protected $fillable = [
         'nombre',
+        'icono',
+        'imagen',
         'descripcion',
-        'precio'
+        'precio',
+        'categoria'
     ];
 
     // Capitalizar automáticamente
@@ -17,5 +20,19 @@ class Servicio extends Model
     {
         return ucwords($value);
     }
-}
 
+    // Scope por categoría
+    public function scopePorCategoria($query, $categoria)
+    {
+        return $query->where('categoria', $categoria);
+    }
+
+    // Obtener URL de imagen
+    public function getImagenUrlAttribute()
+    {
+        if ($this->imagen) {
+            return asset('storage/servicios/' . $this->imagen);
+        }
+        return null;
+    }
+}

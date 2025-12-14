@@ -1,0 +1,194 @@
+/* resources/css/filament/admin/theme.css */
+
+/* 1. Importación de los estilos base de Filament/Tailwind */
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * ESTILOS PERSONALIZADOS DE MÍA DECORACIONES (ROSA) *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* Fondo blanco con tonalidades rosa y variables de color */
+:root {
+    --color-mia-pink: #FF5A79;
+    --color-mia-pink-light: #FFE5EA;
+    --color-mia-pink-hover: #E64565;
+}
+
+/* Panel principal con fondo blanco */
+.fi-body {
+    background-color: #ffffff !important;
+}
+
+/* Sidebar con gradiente rosa suave */
+.fi-sidebar {
+    background: linear-gradient(180deg, #ffffff 0%, #FFF5F7 100%) !important;
+    border-right: 1px solid #FFE5EA !important;
+}
+
+/* Items del sidebar */
+.fi-sidebar-item-button {
+    border-radius: 12px !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: var(--color-mia-pink-light) !important;
+}
+
+/* Item activo del sidebar */
+.fi-sidebar-item-button.active {
+    background-color: var(--color-mia-pink) !important;
+    color: white !important;
+}
+/* Header con fondo blanco */
+.fi-topbar {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #FFE5EA !important;
+}
+
+/* AUMENTO DEL ALTO DEL HEADER (Ejemplo: 80PX) */
+.fi-topbar-header {
+    /* Aumentar el padding vertical (ejemplo: 20px arriba/abajo) */
+    padding-top: 20px !important; 
+    padding-bottom: 20px !important; 
+    height: auto !important; /* Aseguramos que no haya una altura fija */
+}
+
+/* TAMAÑO DEL LOGO (Mantenemos 80PX) */
+
+/* 1. Sobrescribe la altura del contenedor principal de la marca */
+.fi-topbar-brand {
+    height: 80px !important; /* Debe ser igual al tamaño del logo */
+    align-items: center !important; 
+}
+
+/* 2. Sobrescribe la altura del contenedor del logo */
+.fi-topbar-brand-logo {
+    height: 80px !important; 
+    width: auto !important; 
+}
+
+/* 3. Sobrescribe la altura de la IMAGEN DENTRO del contenedor */
+.fi-topbar-brand-logo img {
+    height: 80px !important; 
+    width: auto !important; 
+}
+
+/* Cards con sombra rosa suave */
+.fi-section {
+    background-color: #ffffff !important;
+    border: 1px solid #FFE5EA !important;
+    border-radius: 16px !important;
+    box-shadow: 0 1px 3px 0 rgba(255, 90, 121, 0.1) !important;
+}
+
+/* Botones primarios rosa */
+.fi-btn-primary {
+    background-color: var(--color-mia-pink) !important;
+    border-color: var(--color-mia-pink) !important;
+}
+
+.fi-btn-primary:hover {
+    background-color: var(--color-mia-pink-hover) !important;
+}
+
+/* Inputs con borde rosa al focus */
+.fi-input:focus,
+.fi-select:focus,
+.fi-textarea:focus {
+    border-color: var(--color-mia-pink) !important;
+    box-shadow: 0 0 0 3px rgba(255, 90, 121, 0.2) !important; 
+}
+
+/* Tablas con hover rosa */
+.fi-ta-row:hover {
+    background-color: #FFF5F7 !important;
+}
+
+/* Stats widgets con tonos rosa */
+.fi-wi-stats-overview-stat {
+    background: linear-gradient(135deg, #ffffff 0%, #FFF5F7 100%) !important;
+    border: 1px solid #FFE5EA !important;
+}
+
+/* Badges rosa */
+.fi-badge-primary {
+    background-color: var(--color-mia-pink-light) !important;
+    color: var(--color-mia-pink) !important;
+}
+
+/* --- CORRECCIÓN DE ELEMENTOS OSCUROS/TABLA (Dark Mode Fix) --- */
+
+/* Fondo de la tabla/listado que se ve negro */
+.fi-ta-content {
+    background-color: #ffffff !important;
+}
+
+/* Filas de la tabla (si se ven negras) */
+.fi-ta-row {
+    background-color: #ffffff !important;
+    border-color: #FFE5EA !important;
+}
+
+/* Títulos y texto de la tabla (asegurar color oscuro) */
+.fi-ta-header-cell, 
+.fi-ta-cell {
+    color: #404040 !important; /* Gris oscuro para el texto */
+}
+
+/* Input de búsqueda (se ve negro en la imagen) */
+.fi-input-wrapper {
+    background-color: #ffffff !important;
+    border-color: #FFE5EA !important;
+}
+
+/* Texto de la paginación y otros textos internos */
+.fi-ta-footer,
+.fi-ta-pagination {
+    background-color: #ffffff !important;
+    color: #404040 !important;
+}
+
+/* Botones y cabeceras que se vean mal, asegurando fondo blanco */
+.fi-page-header {
+    background-color: #ffffff !important;
+}
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * CÓDIGO AÑADIDO: VISIBILIDAD DE LOGO Y TEXTO JUNTOS *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/* 1. Asegura que el contenedor principal muestre tanto el logo como el texto */
+/* .fi-topbar-brand es el contenedor en la barra superior */
+.fi-topbar-brand {
+    /* Usar flexbox para alinear elementos horizontalmente */
+    display: flex !important;
+    align-items: center; 
+}
+
+/* 2. Asegura que el contenedor del nombre (texto) no esté oculto */
+/* .fi-brand-name contiene el texto "Mia Decoraciones" */
+.fi-brand-name {
+    display: inline-block !important;
+    /* Ajusta el margen si el logo y el texto están muy pegados */
+    margin-left: 0.5rem !important; 
+    /* Asegura que el texto use el color de la barra (no blanco si el fondo es blanco) */
+    color: #404040 !important; 
+    font-size: 1.5rem !important; /* Puedes ajustar el tamaño del texto aquí */
+    font-weight: bold !important;
+}
+
+/* 3. Ajuste para el Sidebar (si tienes el sidebar abierto) */
+.fi-sidebar .fi-sidebar-brand {
+    display: flex !important;
+    align-items: center;
+    /* Asegura que el texto del nombre no esté oculto en el sidebar */
+    .fi-brand-name {
+        display: inline-block !important;
+        margin-left: 0.5rem !important;
+        color: inherit !important;
+    }
+}
+
+/* 2. Directivas de Tailwind (deben ir al final) */
+@source '../../../../app/Filament/Admin/**/*';
+@source '../../../../resources/views/filament/admin/**/*';
