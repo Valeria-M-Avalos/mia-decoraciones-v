@@ -25,7 +25,7 @@
 
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
         <div class="animate-fade-in-up">
-            <h1 class="text-6xl md:text-8xl font-bold text-gray-800 mb-6 leading-tight">
+            <h1 class="text-5xl md:text-7xl font-bold text-gray-800 mb-6 leading-tight">
                 Convierte tus Sueños en
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-pink-600 to-pink-500 animate-gradient">
                     Realidad
@@ -61,19 +61,19 @@
 
         <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
             <div class="text-center transform hover:scale-110 transition-transform duration-300">
-                <div class="text-4xl md:text-5xl font-bold text-pink-600 mb-2">500+</div>
+                <div class="text-3xl md:text-4xl font-bold text-pink-600 mb-2">500+</div>
                 <div class="text-sm md:text-base text-gray-600">Eventos Realizados</div>
             </div>
             <div class="text-center transform hover:scale-110 transition-transform duration-300">
-                <div class="text-4xl md:text-5xl font-bold text-pink-600 mb-2">60</div>
+                <div class="text-3xl md:text-4xl font-bold text-pink-600 mb-2">60</div>
                 <div class="text-sm md:text-base text-gray-600">Capacidad Máxima</div>
             </div>
             <div class="text-center transform hover:scale-110 transition-transform duration-300">
-                <div class="text-4xl md:text-5xl font-bold text-pink-600 mb-2">10+</div>
+                <div class="text-3xl md:text-4xl font-bold text-pink-600 mb-2">10+</div>
                 <div class="text-sm md:text-base text-gray-600">Años de Experiencia</div>
             </div>
             <div class="text-center transform hover:scale-110 transition-transform duration-300">
-                <div class="text-4xl md:text-5xl font-bold text-pink-600 mb-2">100%</div>
+                <div class="text-3xl md:text-4xl font-bold text-pink-600 mb-2">100%</div>
                 <div class="text-sm md:text-base text-gray-600">Satisfacción</div>
             </div>
         </div>
