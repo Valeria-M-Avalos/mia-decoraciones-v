@@ -9,6 +9,8 @@ class EventosPorTipoChart extends ChartWidget
 {
     protected static ?int $sort = 4;
 
+    protected int | string | array $columnSpan = 1;
+
     protected function getData(): array
     {
         $eventos = Evento::select('tipo_evento')
@@ -41,7 +43,7 @@ class EventosPorTipoChart extends ChartWidget
     {
         return 'pie';
     }
-    
+
     public function getHeading(): ?string
     {
         return 'Eventos por Tipo';
