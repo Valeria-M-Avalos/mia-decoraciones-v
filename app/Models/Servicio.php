@@ -27,12 +27,5 @@ class Servicio extends Model
         return $query->where('categoria', $categoria);
     }
 
-    // Obtener URL de imagen
-    public function getImagenUrlAttribute()
-    {
-        if ($this->imagen) {
-            return asset('storage/servicios/' . $this->imagen);
-        }
-        return null;
-    }
+
 }
