@@ -8,4 +8,10 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateReserva extends CreateRecord
 {
     protected static string $resource = ReservaResource::class;
+
+    // 👉 Esto hace que, al guardar, vuelva al formulario vacío
+    protected function getRedirectUrl(): string
+    {
+        return static::$resource::getUrl('create');
+    }
 }

@@ -13,23 +13,29 @@ class ClientesTable
     public static function configure(Table $table): Table
     {
         return $table
+            // ✅ MEJORA 4: orden por nombre por defecto
+            ->defaultSort('nombre')
+
             ->columns([
                 TextColumn::make('nombre')
-                    ->label('Nombre')
-                    ->searchable(),
-                TextColumn::make('apellido')
-                    ->label('Apellido')
-                    ->searchable(),
+                    ->label('Cliente')
+                    ->formatStateUsing(fn ($record) => $record->nombre . ' ' . $record->apellido)
+                    ->searchable(['nombre', 'apellido'])
+                    ->sortable(),
+
                 TextColumn::make('email')
-                    ->label('Email address')
+                    ->label('Correo electrónico')
                     ->searchable(),
+
                 TextColumn::make('telefono')
                     ->label('Teléfono')
                     ->searchable(),
+
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
+
                 TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
