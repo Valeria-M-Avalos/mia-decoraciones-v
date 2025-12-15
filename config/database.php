@@ -56,10 +56,10 @@ return [
             'prefix' => '',
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? [
-                PDO::MYSQL_ATTR_SSL_CA => '/home/site/wwwroot/DigiCertGlobalRootCA.crt.pem',
-                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => true,
-            ] : [],
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                    PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+                ]) : [],
+
         ],
 
 
